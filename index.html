@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Cobra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Marcellus+SC&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <h1 class="plaque plaque--title" id="title">Jogo da Cobra</h1>
+
+    <dl class="hud">
+      <div class="hud__item">
+        <dt>Pontos</dt>
+        <dd id="score">0</dd>
+      </div>
+      <div class="hud__item hud__item--level">
+        <dt>Nível</dt>
+        <dd>
+          <span id="level">1</span>
+          <span class="pips" id="levelPips" aria-hidden="true"></span>
+        </dd>
+      </div>
+      <div class="hud__item hud__item--record">
+        <dt>Recorde</dt>
+        <dd id="high-score">0</dd>
+      </div>
+    </dl>
+
+    <div class="board" id="board">
+      <canvas id="gameCanvas" aria-label="Tabuleiro do jogo"></canvas>
+
+      <div class="overlay" id="startScreen">
+        <div class="overlay__box">
+          <p>Coma as flores para crescer. Não bata na moldura nem em si mesma.</p>
+          <p class="overlay__controls">Mova com as setas, WASD ou deslizando o dedo.</p>
+          <button class="button" id="startButton" type="button">Começar</button>
+          <p class="overlay__hint">ou pressione Enter</p>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="levelUpScreen">
+        <div class="overlay__box">
+          <h2 class="plaque plaque--small" id="levelUpText">Nível 2</h2>
+          <p>Mais rápido agora.</p>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="gameOverScreen">
+        <div class="overlay__box">
+          <h2 class="plaque plaque--small" id="gameOverTitle">Fim de jogo</h2>
+          <p>Você fez <strong id="finalScore">0</strong> pontos.</p>
+          <p class="new-record" id="newRecord" hidden>Novo recorde!</p>
+          <div class="leaderboard">
+            <h3 class="leaderboard__title">Recordes</h3>
+            <ol id="leaderboardList"></ol>
+          </div>
+          <button class="button" id="restartButton" type="button">Jogar de novo</button>
+          <p class="overlay__hint">ou pressione Enter</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --page:        #edf1f7;
+  --glaze:       #fbfcfe;
+  --grout:       #d5ddea;
+  --cobalt:      #1e44a0;
+  --cobalt-wash: #8fa8da;
+  --ochre:       #d99a1e;
+  --ochre-ink:   #8f6209;
+  --ink:         #17213a;
+  --ink-soft:    #55607a;
+
+  --board: min(400px, calc(100vw - 32px));
+  --display: 'Marcellus SC', 'Times New Roman', serif;
+  --body: 'Familjen Grotesk', 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--body);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+.game {
+  width: var(--board);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Plaque: letters painted one per tile, like a street-name azulejo */
+.plaque {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
+  border: 2px solid var(--cobalt);
+  outline: 1px solid var(--cobalt);
+  outline-offset: 3px;
+  background: var(--cobalt-wash);
+  gap: 1px;
+  font-family: var(--display);
+  font-weight: 400;
+  color: var(--cobalt);
+  line-height: 1;
+}
+
+.plaque__tile {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--glaze);
+  font-size: calc(var(--board) / var(--cols, 1) * 0.7);
+  animation: lay-tile 0.42s cubic-bezier(.2, .8, .3, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+.plaque--title {
+  margin: 4px 4px 0;
+}
+
+.plaque--small {
+  --tile: clamp(22px, 7vw, 30px);
+  grid-template-columns: repeat(var(--cols, 1), var(--tile));
+  margin-bottom: 10px;
+}
+
+.plaque--small .plaque__tile {
+  font-size: calc(var(--tile) * 0.7);
+}
+
+@keyframes lay-tile {
+  from { opacity: 0; transform: translateY(-6px) scale(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* HUD */
+.hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  padding: 0 2px;
+}
+
+.hud__item dt {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 2px;
+}
+
+.hud__item dd {
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.hud__item--level {
+  text-align: center;
+}
+
+.hud__item--level dd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cobalt);
+}
+
+.hud__item--record {
+  text-align: right;
+}
+
+.pips {
+  display: flex;
+  gap: 3px;
+}
+
+.pips i {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--cobalt-wash);
+  background: var(--glaze);
+}
+
+.pips i.is-filled {
+  background: var(--ochre);
+  border-color: var(--ochre);
+}
+
+/* Board */
+.board {
+  position: relative;
+  aspect-ratio: 1;
+  border: 2px solid var(--cobalt);
+  outline: 1px solid var(--cobalt);
+  outline-offset: 3px;
+  margin: 4px;
+  width: calc(var(--board) - 8px);
+  align-self: center;
+  touch-action: none;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(251, 252, 254, 0.9);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  max-width: 300px;
+}
+
+.overlay__box p {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.overlay__box strong {
+  font-weight: 700;
+  color: var(--cobalt);
+  font-variant-numeric: tabular-nums;
+}
+
+.overlay__controls {
+  color: var(--ink-soft);
+  font-size: 0.9rem !important;
+}
+
+.overlay__hint {
+  color: var(--ink-soft);
+  font-size: 0.8rem !important;
+}
+
+.new-record {
+  color: var(--ochre-ink);
+  font-weight: 700;
+}
+
+.button {
+  margin-top: 10px;
+  font: 600 1rem var(--body);
+  color: var(--glaze);
+  background: var(--cobalt);
+  border: 0;
+  padding: 10px 22px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--ink);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 3px;
+}
+
+/* Leaderboard */
+.leaderboard {
+  width: 180px;
+  margin-top: 6px;
+}
+
+.leaderboard__title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+
+#leaderboardList {
+  list-style: none;
+}
+
+#leaderboardList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--grout);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+}
+
+#leaderboardList li span:first-child {
+  color: var(--ink-soft);
+}
+
+#leaderboardList li.is-current {
+  background: rgba(217, 154, 30, 0.16);
+  font-weight: 700;
+}
+
+@media (max-width: 440px) {
+  .overlay {
+    padding: 12px;
+  }
+
+  .overlay__box {
+    gap: 4px;
+  }
+
+  .plaque--small {
+    --tile: 22px;
+    margin-bottom: 6px;
+  }
+
+  #leaderboardList li {
+    padding: 1px 8px;
+    font-size: 0.85rem;
+  }
+
+  .button {
+    margin-top: 6px;
+    padding: 8px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plaque__tile {
+    animation: none;
+  }
+}
